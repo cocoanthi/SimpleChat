@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>API_KEY</key>
+	<string>AIzaSyCgmzZqrV8tS8eIprLd6i959b22X_HdPvM</string>
+	<key>GCM_SENDER_ID</key>
+	<string>443282935235</string>
+	<key>PLIST_VERSION</key>
+	<string>1</string>
+	<key>BUNDLE_ID</key>
+	<string>Yaguchi.SimpleChat</string>
+	<key>PROJECT_ID</key>
+	<string>simplechat-196bb</string>
+	<key>STORAGE_BUCKET</key>
+	<string>simplechat-196bb.appspot.com</string>
+	<key>IS_ADS_ENABLED</key>
+	<false></false>
+	<key>IS_ANALYTICS_ENABLED</key>
+	<false></false>
+	<key>IS_APPINVITE_ENABLED</key>
+	<true></true>
+	<key>IS_GCM_ENABLED</key>
+	<true></true>
+	<key>IS_SIGNIN_ENABLED</key>
+	<true></true>
+	<key>GOOGLE_APP_ID</key>
+	<string>1:443282935235:ios:727886b0aeebaa01ef4176</string>
+</dict>
+</plist>
