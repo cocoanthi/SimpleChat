@@ -6,10 +6,11 @@
 //
 
 import Foundation
+import Combine
 import FirebaseFirestore
 
-@Observable class MessageViewModel {
-    private(set) var messages: [MessageElement] = []
+class MessageViewModel: ObservableObject {
+    @Published private(set) var messages: [MessageElement] = []
     ///
     private var lister: ListenerRegistration?
     /// コレクションの名称
