@@ -23,6 +23,7 @@
 		26A028D52C145741007F4446 /* MessageRow.swift in Sources */ = {isa = PBXBuildFile; fileRef = 26A028D42C145741007F4446 /* MessageRow.swift */; };
 		26A028D72C14579F007F4446 /* MessageView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 26A028D62C14579F007F4446 /* MessageView.swift */; };
 		26A028DA2C145B27007F4446 /* Date+.swift in Sources */ = {isa = PBXBuildFile; fileRef = 26A028D92C145B27007F4446 /* Date+.swift */; };
+		26A028DD2C14A679007F4446 /* Logger.swift in Sources */ = {isa = PBXBuildFile; fileRef = 26A028DC2C14A679007F4446 /* Logger.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -37,6 +38,7 @@
 		26A028D42C145741007F4446 /* MessageRow.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MessageRow.swift; sourceTree = "<group>"; };
 		26A028D62C14579F007F4446 /* MessageView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MessageView.swift; sourceTree = "<group>"; };
 		26A028D92C145B27007F4446 /* Date+.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Date+.swift"; sourceTree = "<group>"; };
+		26A028DC2C14A679007F4446 /* Logger.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Logger.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -75,6 +77,7 @@
 		26A028AE2C144404007F4446 /* SimpleChat */ = {
 			isa = PBXGroup;
 			children = (
+				26A028DB2C14A664007F4446 /* Util */,
 				26A028D82C145B16007F4446 /* Extension */,
 				26A028CF2C1449C8007F4446 /* View */,
 				26A028CE2C1449AB007F4446 /* ViewModel */,
@@ -135,6 +138,14 @@
 				26A028D92C145B27007F4446 /* Date+.swift */,
 			);
 			path = Extension;
+			sourceTree = "<group>";
+		};
+		26A028DB2C14A664007F4446 /* Util */ = {
+			isa = PBXGroup;
+			children = (
+				26A028DC2C14A679007F4446 /* Logger.swift */,
+			);
+			path = Util;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -226,6 +237,7 @@
 				26A028D32C145728007F4446 /* MessageVIewModel.swift in Sources */,
 				26A028D12C14570B007F4446 /* MessageElement.swift in Sources */,
 				26A028D52C145741007F4446 /* MessageRow.swift in Sources */,
+				26A028DD2C14A679007F4446 /* Logger.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
