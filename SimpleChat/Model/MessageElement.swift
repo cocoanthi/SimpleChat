@@ -8,9 +8,16 @@
 import Foundation
 import FirebaseFirestoreSwift
 
-struct MessageElement: Codable {
+struct MessageElement: Codable, Identifiable, Equatable {
     @DocumentID var id: String?
     var name: String
     var message: String
     var createAt: Date
+    
+    enum CodingKeys: String, CodingKey {
+        case id
+        case name
+        case message
+        case createAt
+    }
 }

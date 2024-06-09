@@ -8,37 +8,62 @@
 import SwiftUI
 
 struct MessageView: View {
-    let name: String
+    enum ScrollAnchor: Hashable {
+        case bottom
+    }
     
-    private var messageVM = MessageViewModel()
+    let name: String
+    @StateObject private var messageVM = MessageViewModel()
     @State private var typeMessage = ""
+    @State private var scrolled = false
     
     init(name: String) {
         self.name = name
     }
     
     var body: some View {
-        VStack {
-            List(messageVM.messages, id: \.id) {message in
-                if message.name == name {
-                    MessageRow(message: message.message, isMyMessage: true, user:message.name, date: message.createAt)
-                } else {
-                    MessageRow(message: message.message, isMyMessage: false, user:message.name, date: message.createAt)
+        VStack(spacing: .zero) {
+            ScrollViewReader { proxy in
+                ScrollView {
+                    VStack(spacing: .zero) {
+                        ForEach(messageVM.messages) { message in
+                            MessageRow(
+                                message: message.message,
+                                isMyMessage: message.name == name,
+                                user:message.name,
+                                date: message.createAt
+                            )
+                            .id(message.id)
+                        }
+                    }
+                    .onChange(of: messageVM.messages, perform: { _ in
+                        // チャットに更新があったら一番最後のログまでスクロール
+                        guard let lastId = messageVM.messages.last?.id else { return }
+                        withAnimation {
+                            proxy.scrollTo(lastId, anchor: .bottom)
+                        }
+                    })
                 }
             }
             .navigationBarTitle("Chats", displayMode: .inline)
-            HStack {
-                TextField("Message", text: $typeMessage)
-                .textFieldStyle(RoundedBorderTextFieldStyle())
-                
-                Button {
-                    messageVM.addMessage(message: typeMessage, name: name)
-                    typeMessage = ""
-                } label: {
-                    Image(systemName: "arrow.up.circle.fill")
-                }
-            }
-            .padding()
+            
+            Divider()
+            inputMessageView()
+                .padding()
         }
+    }
+    
+    private func inputMessageView() -> some View {
+        HStack(spacing: 4) {
+            TextField("Message", text: $typeMessage)
+                .textFieldStyle(RoundedBorderTextFieldStyle())
+            Button {
+                messageVM.addMessage(message: typeMessage, name: name)
+                typeMessage = ""
+            } label: {
+                Image(systemName: "arrow.up.circle.fill")
+            }
+        }
+        .animation(.default)
     }
 }

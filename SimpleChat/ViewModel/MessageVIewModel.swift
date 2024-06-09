@@ -11,57 +11,58 @@ import FirebaseFirestore
 
 class MessageViewModel: ObservableObject {
     @Published private(set) var messages: [MessageElement] = []
-    ///
+
     private var lister: ListenerRegistration?
+    private let db = Firestore.firestore()
     /// コレクションの名称
     private let collectionName = "messages"
-    
-    init() {
-        let db = Firestore.firestore()
         
-        lister = db.collection(collectionName).addSnapshotListener { (querySnapshot, error) in
-            if let error {
-                print(error.localizedDescription)
-                return
-            }
-            if let querySnapshot {
-                for documentChange in querySnapshot.documentChanges {
-                    if documentChange.type == .added {
-                        do {
-                            // Codableを使って構造体に変換する
-                            let message = try documentChange.document.data(as: MessageElement.self)
-                            self.messages.append(message)
-                        } catch {
-                            print(error.localizedDescription)
-                        }
-                    }
-                }
-                // 日付順に並べ替えする
-                self.messages.sort { before, after in
-                    return before.createAt < after.createAt ? true : false
-                }
-            }
-        }
+    init() {
+        readAllMessages()
     }
     
     deinit {
         lister?.remove()
     }
     
-    func addMessage(message: String , name: String) {
-        do {
-            let message = MessageElement(name: name, message: message, createAt: Date())
-            let db = Firestore.firestore()
-            try db.collection(collectionName).addDocument(from: message) { error in
-                if let error = error {
-                    print(error.localizedDescription)
+    func readAllMessages() {
+        // orderで作成順にソートして取得する
+        lister = db.collection(collectionName)
+            .order(by: MessageElement.CodingKeys.createAt.rawValue)
+            .addSnapshotListener { (querySnapshot, error) in
+                if let error {
+                    Logger.error(error: error)
                     return
                 }
-                
-                print("success")
+                guard let querySnapshot else { return }
+                querySnapshot.documentChanges.forEach { doc in
+                    if doc.type == .added {
+                        do {
+                            // Codableを使って構造体に変換する
+                            let message = try doc.document.data(as: MessageElement.self)
+                            DispatchQueue.main.async {
+                                self.messages.append(message)
+                            }
+                        } catch {
+                            Logger.error(error: error)
+                        }
+                    }
+                }
+            }
+    }
+    
+    func addMessage(message: String , name: String, createAt: Date = Date()) {
+        do {
+            let message = MessageElement(name: name, message: message, createAt: createAt)
+            try db.collection(collectionName).addDocument(from: message) { error in
+                if let error = error {
+                    Logger.error(error: error)
+                    return
+                }
+                Logger.info("success")
             }
         } catch {
-            print(error.localizedDescription)
+            Logger.error(error: error)
         }
     }
 }
