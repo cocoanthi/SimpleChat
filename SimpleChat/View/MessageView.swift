@@ -44,6 +44,9 @@ struct MessageView: View {
                         }
                     })
                 }
+                .onTapGesture {
+                    UIApplication.shared.closeKeyboard()
+                }
             }
             .navigationBarTitle("Chats", displayMode: .inline)
             
@@ -58,8 +61,10 @@ struct MessageView: View {
             TextField("Message", text: $typeMessage)
                 .textFieldStyle(RoundedBorderTextFieldStyle())
             Button {
+                guard !typeMessage.isEmpty else { return }
                 messageVM.addMessage(message: typeMessage, name: name)
                 typeMessage = ""
+                UIApplication.shared.closeKeyboard()
             } label: {
                 Image(systemName: "arrow.up.circle.fill")
             }

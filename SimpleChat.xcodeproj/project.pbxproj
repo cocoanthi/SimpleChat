@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		2629C6E62C15AAE900C2D4C1 /* UIApplication+.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2629C6E52C15AAE900C2D4C1 /* UIApplication+.swift */; };
 		26A028B02C144404007F4446 /* SimpleChatApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 26A028AF2C144404007F4446 /* SimpleChatApp.swift */; };
 		26A028B22C144404007F4446 /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 26A028B12C144404007F4446 /* ContentView.swift */; };
 		26A028B42C144406007F4446 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 26A028B32C144406007F4446 /* Assets.xcassets */; };
@@ -27,6 +28,8 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		2629C6E52C15AAE900C2D4C1 /* UIApplication+.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIApplication+.swift"; sourceTree = "<group>"; };
+		2629C6E72C15ADA700C2D4C1 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist; path = Info.plist; sourceTree = "<group>"; };
 		26A028AC2C144404007F4446 /* SimpleChat.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = SimpleChat.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		26A028AF2C144404007F4446 /* SimpleChatApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SimpleChatApp.swift; sourceTree = "<group>"; };
 		26A028B12C144404007F4446 /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
@@ -77,6 +80,7 @@
 		26A028AE2C144404007F4446 /* SimpleChat */ = {
 			isa = PBXGroup;
 			children = (
+				2629C6E72C15ADA700C2D4C1 /* Info.plist */,
 				26A028DB2C14A664007F4446 /* Util */,
 				26A028D82C145B16007F4446 /* Extension */,
 				26A028CF2C1449C8007F4446 /* View */,
@@ -136,6 +140,7 @@
 			isa = PBXGroup;
 			children = (
 				26A028D92C145B27007F4446 /* Date+.swift */,
+				2629C6E52C15AAE900C2D4C1 /* UIApplication+.swift */,
 			);
 			path = Extension;
 			sourceTree = "<group>";
@@ -235,6 +240,7 @@
 				26A028B22C144404007F4446 /* ContentView.swift in Sources */,
 				26A028B02C144404007F4446 /* SimpleChatApp.swift in Sources */,
 				26A028D32C145728007F4446 /* MessageVIewModel.swift in Sources */,
+				2629C6E62C15AAE900C2D4C1 /* UIApplication+.swift in Sources */,
 				26A028D12C14570B007F4446 /* MessageElement.swift in Sources */,
 				26A028D52C145741007F4446 /* MessageRow.swift in Sources */,
 				26A028DD2C14A679007F4446 /* Logger.swift in Sources */,
@@ -369,6 +375,7 @@
 				DEVELOPMENT_TEAM = 937YVNJH2A;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_FILE = SimpleChat/Info.plist;
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
@@ -398,6 +405,7 @@
 				DEVELOPMENT_TEAM = 937YVNJH2A;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_FILE = SimpleChat/Info.plist;
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
