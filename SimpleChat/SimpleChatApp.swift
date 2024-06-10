@@ -22,11 +22,17 @@ class AppDelegate: NSObject, UIApplicationDelegate {
 struct SimpleChatApp: App {
     // register app delegate for Firebase setup
     @UIApplicationDelegateAdaptor(AppDelegate.self) var delegate
-    
+    @StateObject var viewModel = AuthViewModel()
+
     var body: some Scene {
         WindowGroup {
             NavigationView {
-                ContentView()
+                // ログイン状態によって画面遷移するページを変更する
+                if viewModel.isAuthenticated {
+                    TopTabView(viewModel: viewModel)
+                } else {
+                    SignInView(viewModel: viewModel)
+                }
             }
         }
     }
