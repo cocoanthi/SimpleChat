@@ -8,26 +8,33 @@
 import SwiftUI
 
 struct SignUpView: View {
+    @State private var name: String = ""
     @State private var email: String = ""
     @State private var password: String = ""
     @ObservedObject var viewModel: AuthViewModel
     
     var body: some View {
-        VStack {
-            TextField("Email", text: $email)
-                .textFieldStyle(RoundedBorderTextFieldStyle())
-                .padding()
-            
-            SecureField("Password", text: $password)
-                .textFieldStyle(RoundedBorderTextFieldStyle())
-                .padding()
-            
-            Button("Sign Up") {
-                viewModel.signUp(email: email, password: password)
+        NavigationStack {
+            VStack {
+                TextField("Name", text: $name)
+                    .textFieldStyle(RoundedBorderTextFieldStyle())
+                    .padding()
+                
+                TextField("Email", text: $email)
+                    .textFieldStyle(RoundedBorderTextFieldStyle())
+                    .padding()
+                
+                SecureField("Password", text: $password)
+                    .textFieldStyle(RoundedBorderTextFieldStyle())
+                    .padding()
+                
+                Button("Sign Up") {
+                    viewModel.signUp(name: name, email: email, password: password)
+                }
             }
-            // ログイン後のページに遷移
-            if viewModel.isAuthenticated {
+            .navigationDestination(isPresented: $viewModel.isAuthenticated) {
                 TopTabView(viewModel: viewModel)
+                    .navigationBarBackButtonHidden()
             }
         }
     }

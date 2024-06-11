@@ -1,25 +1,27 @@
 //
-//  MessageElement.swift
+//  Group.swift
 //  SimpleChat
 //
-//  Created by 矢口諒 on 2024/06/08.
+//  Created by 矢口諒 on 2024/06/11.
 //
 
 import Foundation
 import FirebaseFirestoreSwift
 
-struct MessageElement: Codable, Identifiable, Equatable {
+struct Group: Codable, Identifiable, Equatable {
     @DocumentID var id: String?
+    /// UUID.uuidStringを想定
     var groupId: String
     var name: String
-    var message: String
+    /// Firebase Authで取得できるid
+    var uids: [String]
     var createAt: Date
     
     enum CodingKeys: String, CodingKey {
         case id
         case groupId
         case name
-        case message
+        case uids
         case createAt
     }
 }

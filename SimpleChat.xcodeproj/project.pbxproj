@@ -16,6 +16,9 @@
 		2629C6F62C15B86300C2D4C1 /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 2629C6F52C15B86300C2D4C1 /* GoogleService-Info.plist */; };
 		2629C6FA2C16004600C2D4C1 /* HistoryView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2629C6F92C16004600C2D4C1 /* HistoryView.swift */; };
 		2629C6FC2C16005100C2D4C1 /* SettingView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2629C6FB2C16005100C2D4C1 /* SettingView.swift */; };
+		267FB3F12C17435F00B51EEE /* User.swift in Sources */ = {isa = PBXBuildFile; fileRef = 267FB3F02C17435F00B51EEE /* User.swift */; };
+		267FB3F32C174E6800B51EEE /* HistoryViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 267FB3F22C174E6800B51EEE /* HistoryViewModel.swift */; };
+		267FB3F52C17572700B51EEE /* Group.swift in Sources */ = {isa = PBXBuildFile; fileRef = 267FB3F42C17572700B51EEE /* Group.swift */; };
 		26A028B02C144404007F4446 /* SimpleChatApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 26A028AF2C144404007F4446 /* SimpleChatApp.swift */; };
 		26A028B22C144404007F4446 /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 26A028B12C144404007F4446 /* ContentView.swift */; };
 		26A028B42C144406007F4446 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 26A028B32C144406007F4446 /* Assets.xcassets */; };
@@ -45,6 +48,9 @@
 		2629C6F52C15B86300C2D4C1 /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
 		2629C6F92C16004600C2D4C1 /* HistoryView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HistoryView.swift; sourceTree = "<group>"; };
 		2629C6FB2C16005100C2D4C1 /* SettingView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingView.swift; sourceTree = "<group>"; };
+		267FB3F02C17435F00B51EEE /* User.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = User.swift; sourceTree = "<group>"; };
+		267FB3F22C174E6800B51EEE /* HistoryViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HistoryViewModel.swift; sourceTree = "<group>"; };
+		267FB3F42C17572700B51EEE /* Group.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Group.swift; sourceTree = "<group>"; };
 		26A028AC2C144404007F4446 /* SimpleChat.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = SimpleChat.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		26A028AF2C144404007F4446 /* SimpleChatApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SimpleChatApp.swift; sourceTree = "<group>"; };
 		26A028B12C144404007F4446 /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
@@ -157,6 +163,8 @@
 			isa = PBXGroup;
 			children = (
 				26A028D02C14570B007F4446 /* MessageElement.swift */,
+				267FB3F02C17435F00B51EEE /* User.swift */,
+				267FB3F42C17572700B51EEE /* Group.swift */,
 			);
 			path = Model;
 			sourceTree = "<group>";
@@ -165,6 +173,7 @@
 			isa = PBXGroup;
 			children = (
 				26A028D22C145728007F4446 /* MessageVIewModel.swift */,
+				267FB3F22C174E6800B51EEE /* HistoryViewModel.swift */,
 				2629C6E82C15B5DF00C2D4C1 /* AuthViewModel.swift */,
 			);
 			path = ViewModel;
@@ -281,12 +290,15 @@
 			buildActionMask = 2147483647;
 			files = (
 				2629C6E92C15B5DF00C2D4C1 /* AuthViewModel.swift in Sources */,
+				267FB3F32C174E6800B51EEE /* HistoryViewModel.swift in Sources */,
 				2629C6F22C15B75D00C2D4C1 /* TabView.swift in Sources */,
 				26A028DA2C145B27007F4446 /* Date+.swift in Sources */,
 				26A028D72C14579F007F4446 /* MessageView.swift in Sources */,
 				26A028B22C144404007F4446 /* ContentView.swift in Sources */,
+				267FB3F52C17572700B51EEE /* Group.swift in Sources */,
 				2629C6FC2C16005100C2D4C1 /* SettingView.swift in Sources */,
 				2629C6EE2C15B66F00C2D4C1 /* SignUpView.swift in Sources */,
+				267FB3F12C17435F00B51EEE /* User.swift in Sources */,
 				26A028B02C144404007F4446 /* SimpleChatApp.swift in Sources */,
 				2629C6FA2C16004600C2D4C1 /* HistoryView.swift in Sources */,
 				2629C6F02C15B69D00C2D4C1 /* ResetPasswordView.swift in Sources */,

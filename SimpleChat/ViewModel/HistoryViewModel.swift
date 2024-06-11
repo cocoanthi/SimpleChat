@@ -1,33 +1,32 @@
 //
-//  MessageVIewModel.swift
+//  HistoryViewModel.swift
 //  SimpleChat
 //
-//  Created by 矢口諒 on 2024/06/08.
+//  Created by 矢口諒 on 2024/06/11.
 //
 
 import Foundation
 import Combine
+import FirebaseAuth
 import FirebaseFirestore
 
-class MessageViewModel: ObservableObject {
-    let groupId: String = ""
-    @Published private(set) var messages: [MessageElement] = []
+class HistoryViewModel: ObservableObject {
+    @Published private(set) var groups: [Group] = []
     private var lister: ListenerRegistration?
     private let db = Firestore.firestore()
-    private let collectionName = "messages"
+    private let collectionName = "groups"
         
     init() {
-        readAllMessages()
+        readAllGroups()
     }
     
     deinit {
         lister?.remove()
     }
     
-    func readAllMessages() {
-        // orderで作成順にソートして取得する
+    func readAllGroups() {
         lister = db.collection(collectionName)
-            .order(by: MessageElement.CodingKeys.createAt.rawValue)
+            .order(by: Group.CodingKeys.createAt.rawValue)
             .addSnapshotListener { (querySnapshot, error) in
                 if let error {
                     Logger.error(error: error)
@@ -38,9 +37,9 @@ class MessageViewModel: ObservableObject {
                     if doc.type == .added {
                         do {
                             // Codableを使って構造体に変換する
-                            let message = try doc.document.data(as: MessageElement.self)
+                            let group = try doc.document.data(as: Group.self)
                             DispatchQueue.main.async {
-                                self.messages.append(message)
+                                self.groups.append(group)
                             }
                         } catch {
                             Logger.error(error: error)
@@ -50,18 +49,23 @@ class MessageViewModel: ObservableObject {
             }
     }
     
-    func addMessage(message: String , name: String, createAt: Date = Date()) {
+    func addGroup(toUid: String, groupId: String = UUID().uuidString, groupName: String, createAt: Date = Date()) {
         do {
-            let message = MessageElement(groupId: groupId, name: name, message: message, createAt: createAt)
-            try db.collection(collectionName).addDocument(from: message) { error in
+            guard let uid = Auth.auth().currentUser?.uid else {
+                Logger.error("userID not found")
+                return
+            }
+            let group = Group(groupId: groupId, name: groupName, uids: [uid, toUid], createAt: createAt)
+            try db.collection(collectionName).addDocument(from: group) { error in
                 if let error = error {
                     Logger.error(error: error)
                     return
                 }
+                // TODO: 成功アラート表示（トースト）
                 Logger.info("success")
             }
         } catch {
             Logger.error(error: error)
         }
-    }    
+    }
 }

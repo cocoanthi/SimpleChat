@@ -38,7 +38,7 @@ struct MessageRow: View {
     }
     
     private func infoContentView() -> some View {
-        Group {
+        VStack(spacing: .zero) {
             if isMyMessage {
                 Text(date.text)
                     .font(.footnote)
