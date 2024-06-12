@@ -11,10 +11,11 @@ import FirebaseAuth
 import FirebaseFirestore
 
 class HistoryViewModel: ObservableObject {
+    let uid: String
+    
     @Published private(set) var groups: [Group] = []
     private var lister: ListenerRegistration?
     private let db = Firestore.firestore()
-    private let uid: String
     private let collectionName = "groups"
     private let docmentFilterName = "uids"
         

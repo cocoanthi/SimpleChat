@@ -10,13 +10,14 @@ import Combine
 import FirebaseFirestore
 
 class MessageViewModel: ObservableObject {
-    let groupId: String = ""
+    let groupId: String
     @Published private(set) var messages: [MessageElement] = []
     private var lister: ListenerRegistration?
     private let db = Firestore.firestore()
     private let collectionName = "messages"
         
-    init() {
+    init(groupId: String) {
+        self.groupId = groupId
         readAllMessages()
     }
     
@@ -39,8 +40,10 @@ class MessageViewModel: ObservableObject {
                         do {
                             // Codableを使って構造体に変換する
                             let message = try doc.document.data(as: MessageElement.self)
-                            DispatchQueue.main.async {
-                                self.messages.append(message)
+                            if message.groupId == self.groupId {
+                                DispatchQueue.main.async {
+                                    self.messages.append(message)
+                                }
                             }
                         } catch {
                             Logger.error(error: error)
@@ -50,9 +53,9 @@ class MessageViewModel: ObservableObject {
             }
     }
     
-    func addMessage(message: String , name: String, createAt: Date = Date()) {
+    func addMessage(message: String , uid: String, createAt: Date = Date()) {
         do {
-            let message = MessageElement(groupId: groupId, name: name, message: message, createAt: createAt)
+            let message = MessageElement(groupId: groupId, uid: uid, message: message, createAt: createAt)
             try db.collection(collectionName).addDocument(from: message) { error in
                 if let error = error {
                     Logger.error(error: error)

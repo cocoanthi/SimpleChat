@@ -8,30 +8,42 @@
 import SwiftUI
 
 struct HistoryView: View {
+    struct NavigationInfo: Hashable {
+        let groupId: String
+        let uid: String
+    }
+    @State var path = NavigationPath()
+
     @ObservedObject var viewModel = HistoryViewModel()
     @State private var isShowAlert: Bool = false
     @State private var toUid: String = ""
     @State private var groupName: String = ""
-    
+        
     var body: some View {
-        NavigationStack {
+        NavigationStack(path: $path){
             Divider()
-            ScrollViewReader { proxy in
-                ScrollView {
-                    VStack(spacing: .zero) {
-                        ForEach(viewModel.groups) { group in
-                            historyRow(group.name, group.groupId, group.createAt.description)
-                            Divider()
-                        }
+            ScrollView {
+                VStack(spacing: .zero) {
+                    ForEach(viewModel.groups) { group in
+                        Button(
+                            action: {
+                                path.append(NavigationInfo(groupId: group.groupId, uid: viewModel.uid))
+                            },
+                            label: {
+                                historyRow(group.name, group.groupId, group.createAt.description)
+                            }
+                        )
+                        Divider()
                     }
-                }
-                .onTapGesture {
-                    UIApplication.shared.closeKeyboard()
                 }
             }
             .navigationBarTitle("履歴", displayMode: .inline)
             .navigationBarBackButtonHidden(true)
+            .navigationDestination(for: NavigationInfo.self, destination: { navigationInfo in
+                MessageView(groupId: navigationInfo.groupId, uid: navigationInfo.uid)
+            })
             .toolbar {
+                // 画面右上にトーク追加ボタン
                 ToolbarItem(placement: .navigationBarTrailing) {
                     Button(
                         action: {

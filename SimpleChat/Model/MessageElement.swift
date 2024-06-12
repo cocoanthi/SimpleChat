@@ -10,15 +10,19 @@ import FirebaseFirestoreSwift
 
 struct MessageElement: Codable, Identifiable, Equatable {
     @DocumentID var id: String?
+    /// どのグループのメッセージか
     var groupId: String
-    var name: String
+    /// 誰が送信したメッセージか
+    var uid: String
+    /// 内容
     var message: String
+    /// 送信日時
     var createAt: Date
     
     enum CodingKeys: String, CodingKey {
         case id
         case groupId
-        case name
+        case uid
         case message
         case createAt
     }

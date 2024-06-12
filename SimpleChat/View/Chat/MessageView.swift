@@ -12,13 +12,14 @@ struct MessageView: View {
         case bottom
     }
     
-    let name: String
-    @StateObject private var messageVM = MessageViewModel()
+    let uid: String
+    @StateObject private var messageVM: MessageViewModel
     @State private var typeMessage = ""
     @State private var scrolled = false
     
-    init(name: String) {
-        self.name = name
+    init(groupId: String, uid: String) {
+        self.uid = uid
+        _messageVM = StateObject(wrappedValue: MessageViewModel(groupId: groupId))
     }
     
     var body: some View {
@@ -29,8 +30,8 @@ struct MessageView: View {
                         ForEach(messageVM.messages) { message in
                             MessageRow(
                                 message: message.message,
-                                isMyMessage: message.name == name,
-                                user:message.name,
+                                isMyMessage: message.uid == uid,
+                                user: "test",
                                 date: message.createAt
                             )
                             .id(message.id)
@@ -62,7 +63,7 @@ struct MessageView: View {
                 .textFieldStyle(RoundedBorderTextFieldStyle())
             Button {
                 guard !typeMessage.isEmpty else { return }
-                messageVM.addMessage(message: typeMessage, name: name)
+                messageVM.addMessage(message: typeMessage, uid: uid)
                 typeMessage = ""
                 UIApplication.shared.closeKeyboard()
             } label: {
