@@ -14,9 +14,12 @@ class HistoryViewModel: ObservableObject {
     @Published private(set) var groups: [Group] = []
     private var lister: ListenerRegistration?
     private let db = Firestore.firestore()
+    private let uid: String
     private let collectionName = "groups"
+    private let docmentFilterName = "uids"
         
     init() {
+        self.uid = Auth.auth().currentUser?.uid ?? ""
         readAllGroups()
     }
     
@@ -38,8 +41,10 @@ class HistoryViewModel: ObservableObject {
                         do {
                             // Codableを使って構造体に変換する
                             let group = try doc.document.data(as: Group.self)
-                            DispatchQueue.main.async {
-                                self.groups.append(group)
+                            if group.uids.contains(self.uid) {
+                                DispatchQueue.main.async {
+                                    self.groups.append(group)
+                                }
                             }
                         } catch {
                             Logger.error(error: error)
@@ -51,10 +56,6 @@ class HistoryViewModel: ObservableObject {
     
     func addGroup(toUid: String, groupId: String = UUID().uuidString, groupName: String, createAt: Date = Date()) {
         do {
-            guard let uid = Auth.auth().currentUser?.uid else {
-                Logger.error("userID not found")
-                return
-            }
             let group = Group(groupId: groupId, name: groupName, uids: [uid, toUid], createAt: createAt)
             try db.collection(collectionName).addDocument(from: group) { error in
                 if let error = error {
