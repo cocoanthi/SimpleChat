@@ -11,10 +11,13 @@ struct HistoryView: View {
     struct NavigationInfo: Hashable {
         let groupId: String
         let uid: String
+        let messages: [MessageElement]
     }
+    @StateObject var commonViewmodel = CommonViewModel.shared
+
     @State var path = NavigationPath()
 
-    @ObservedObject var viewModel = HistoryViewModel()
+    @StateObject var viewModel: HistoryViewModel
     @State private var isShowAlert: Bool = false
     @State private var toUid: String = ""
     @State private var groupName: String = ""
@@ -24,13 +27,13 @@ struct HistoryView: View {
             Divider()
             ScrollView {
                 VStack(spacing: .zero) {
-                    ForEach(viewModel.groups) { group in
+                    ForEach(commonViewmodel.user?.groups ?? []) { group in
                         Button(
                             action: {
-                                path.append(NavigationInfo(groupId: group.groupId, uid: viewModel.uid))
+                                path.append(NavigationInfo(groupId: group.groupId, uid: viewModel.uid, messages: group.messages))
                             },
                             label: {
-                                historyRow(group.name, group.groupId, group.createAt.description)
+                                historyRow(group.name, group.groupId, group.createAt)
                             }
                         )
                         Divider()
@@ -39,6 +42,7 @@ struct HistoryView: View {
             }
             .navigationBarTitle("履歴", displayMode: .inline)
             .navigationBarBackButtonHidden(true)
+            // トーク押下時の処理
             .navigationDestination(for: NavigationInfo.self, destination: { navigationInfo in
                 MessageView(groupId: navigationInfo.groupId, uid: navigationInfo.uid)
             })
@@ -69,11 +73,21 @@ struct HistoryView: View {
         }
     }
     
-    private func historyRow(_ name: String, _ groupId: String, _ createAt: String) -> some View {
+    private func historyRow(_ name: String, _ lastMsg: String, _ createAt: Date) -> some View {
         VStack(spacing: .zero) {
             Text(name)
-            Text(groupId)
-            Text(createAt)
+            HStack(spacing: .zero) {
+                Text(lastMsg)
+                Text(clipDate(from: createAt))
+            }
         }
+    }
+    
+    private func clipDate(from: Date) -> String {
+        let dateFormatter = DateFormatter()
+        dateFormatter.locale = Locale(identifier: "ja_JP")
+        dateFormatter.dateStyle = .medium
+        dateFormatter.dateFormat = "yyyy/MM/dd HH:mm:ss"
+        return dateFormatter.string(from: from)
     }
 }

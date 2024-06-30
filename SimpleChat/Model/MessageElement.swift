@@ -8,7 +8,7 @@
 import Foundation
 import FirebaseFirestoreSwift
 
-struct MessageElement: Codable, Identifiable, Equatable {
+struct MessageElement: Codable, Identifiable, Equatable, Hashable {
     @DocumentID var id: String?
     /// どのグループのメッセージか
     var groupId: String

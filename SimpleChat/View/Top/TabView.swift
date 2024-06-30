@@ -14,11 +14,12 @@ struct TopTabView: View {
         case setting = "設定"
     }
     
-    @ObservedObject var viewModel: AuthViewModel
+    @StateObject var authVM: AuthViewModel
+    @StateObject private var historyVM = HistoryViewModel()
 
     var body: some View {
         TabView {
-            HistoryView()
+            HistoryView(viewModel: historyVM)
                 .tabItem {
                     Label(TabKind.history.rawValue, systemImage: "clock")
                 }
@@ -26,7 +27,7 @@ struct TopTabView: View {
                     // TODO: currentUserが持っているチャット情報を取得
                 }
             
-            SettingView(viewModel: viewModel)
+            SettingView(viewModel: authVM)
                 .tabItem {
                     Label(TabKind.setting.rawValue, systemImage: "gearshape")
                 }

@@ -15,7 +15,7 @@ struct User: Codable, Identifiable, Equatable {
     var email: String
     var createAt: Date
     /// UUID.uuidStringを想定
-    var groups: [String]
+    var groups: [Group] = []
     
     enum CodingKeys: String, CodingKey {
         case id
@@ -23,6 +23,5 @@ struct User: Codable, Identifiable, Equatable {
         case email
         case name
         case createAt
-        case groups
     }
 }

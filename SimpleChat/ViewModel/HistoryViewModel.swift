@@ -11,25 +11,67 @@ import FirebaseAuth
 import FirebaseFirestore
 
 class HistoryViewModel: ObservableObject {
-    let uid: String
+    enum CollectionName: String {
+        case groups
+        case messages
+        case users
+    }
     
-    @Published private(set) var groups: [Group] = []
-    private var lister: ListenerRegistration?
+    let uid: String
+            
+    private var groupsListener: ListenerRegistration?
+    private var messagesListener: ListenerRegistration?
+    private var userListener: ListenerRegistration?
+
     private let db = Firestore.firestore()
-    private let collectionName = "groups"
-    private let docmentFilterName = "uids"
-        
+
     init() {
         self.uid = Auth.auth().currentUser?.uid ?? ""
-        readAllGroups()
+        readUser()
+        DispatchQueue.main.asyncAfter(deadline: .now() + 1.0) { [self] in
+            self.readAllGroups()
+        }
+        DispatchQueue.main.asyncAfter(deadline: .now() + 1.0) { [self] in
+            self.readAllMessages()
+        }
     }
     
     deinit {
-        lister?.remove()
+        groupsListener?.remove()
+        messagesListener?.remove()
+        userListener?.remove()
     }
     
-    func readAllGroups() {
-        lister = db.collection(collectionName)
+    private func readUser() {
+        userListener = db.collection(CollectionName.users.rawValue)
+        // FIXME: listenerで監視する必要はない
+            .addSnapshotListener { (querySnapshot, error) in
+                if let error {
+                    Logger.error(error: error)
+                    return
+                }
+                guard let querySnapshot else { return }
+                querySnapshot.documentChanges.forEach { doc in
+                    if doc.type == .added {
+                        do {
+                            let user = try doc.document.data(as: User.self)
+                            if user.uid == self.uid {
+                                DispatchQueue.main.async {
+                                    CommonViewModel.shared.user = user
+                                }
+                                // 一度ユーザー処理したら以降は監視しない
+                                self.userListener?.remove()
+                            }
+                        } catch {
+                            Logger.error(error: error)
+                        }
+                    }
+                }
+            }
+    }
+    
+    private func readAllGroups() {
+        groupsListener = db.collection(CollectionName.groups.rawValue)
             .order(by: Group.CodingKeys.createAt.rawValue)
             .addSnapshotListener { (querySnapshot, error) in
                 if let error {
@@ -42,9 +84,44 @@ class HistoryViewModel: ObservableObject {
                         do {
                             // Codableを使って構造体に変換する
                             let group = try doc.document.data(as: Group.self)
-                            if group.uids.contains(self.uid) {
+                            let isExist = CommonViewModel.shared.user?.groups.contains { target in
+                                if target.id == group.id {
+                                    return true
+                                } else {
+                                    return false
+                                }
+                            } ?? false
+                            // 二重登録はしない
+                            if group.uids.contains(self.uid) && !isExist {
                                 DispatchQueue.main.async {
-                                    self.groups.append(group)
+                                    CommonViewModel.shared.user?.groups.append(group)
+                                }
+                            }
+                        } catch {
+                            Logger.error(error: error)
+                        }
+                    }
+                }
+            }
+    }
+    
+    private func readAllMessages() {
+        // orderで作成順にソートして取得する
+        messagesListener = db.collection(CollectionName.messages.rawValue)
+            .order(by: MessageElement.CodingKeys.createAt.rawValue)
+            .addSnapshotListener { (querySnapshot, error) in
+                if let error {
+                    Logger.error(error: error)
+                    return
+                }
+                guard let querySnapshot else { return }
+                querySnapshot.documentChanges.forEach { doc in
+                    if doc.type == .added {
+                        do {
+                            let message = try doc.document.data(as: MessageElement.self)
+                            CommonViewModel.shared.user?.groups.indices.forEach {
+                                if CommonViewModel.shared.user?.groups[$0].groupId == message.groupId {
+                                    CommonViewModel.shared.user?.groups[$0].messages.append(message)
                                 }
                             }
                         } catch {
@@ -58,7 +135,7 @@ class HistoryViewModel: ObservableObject {
     func addGroup(toUid: String, groupId: String = UUID().uuidString, groupName: String, createAt: Date = Date()) {
         do {
             let group = Group(groupId: groupId, name: groupName, uids: [uid, toUid], createAt: createAt)
-            try db.collection(collectionName).addDocument(from: group) { error in
+            try db.collection(CollectionName.groups.rawValue).addDocument(from: group) { error in
                 if let error = error {
                     Logger.error(error: error)
                     return

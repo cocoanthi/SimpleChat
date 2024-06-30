@@ -8,11 +8,8 @@
 import SwiftUI
 
 struct MessageView: View {
-    enum ScrollAnchor: Hashable {
-        case bottom
-    }
-    
     let uid: String
+    @StateObject var commonViewModel = CommonViewModel.shared
     @StateObject private var messageVM: MessageViewModel
     @State private var typeMessage = ""
     @State private var scrolled = false
@@ -27,7 +24,7 @@ struct MessageView: View {
             ScrollViewReader { proxy in
                 ScrollView {
                     VStack(spacing: .zero) {
-                        ForEach(messageVM.messages) { message in
+                        ForEach(commonViewModel.user?.groups[safe: messageVM.groupIndex]?.messages ?? []) { message in
                             MessageRow(
                                 message: message.message,
                                 isMyMessage: message.uid == uid,
@@ -37,13 +34,17 @@ struct MessageView: View {
                             .id(message.id)
                         }
                     }
-                    .onChange(of: messageVM.messages, perform: { _ in
+                    .onChange(of: commonViewModel.user?.groups[messageVM.groupIndex].messages, perform: { _ in
                         // チャットに更新があったら一番最後のログまでスクロール
-                        guard let lastId = messageVM.messages.last?.id else { return }
+                        guard let lastId = commonViewModel.user?.groups[messageVM.groupIndex].messages.last?.id else { return }
                         withAnimation {
                             proxy.scrollTo(lastId, anchor: .bottom)
                         }
                     })
+                    .onAppear {
+                        guard let lastId = commonViewModel.user?.groups[messageVM.groupIndex].messages.last?.id else { return }
+                        proxy.scrollTo(lastId, anchor: .bottom)
+                    }
                 }
                 .onTapGesture {
                     UIApplication.shared.closeKeyboard()

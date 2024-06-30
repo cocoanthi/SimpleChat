@@ -33,7 +33,7 @@ struct SignUpView: View {
                 }
             }
             .navigationDestination(isPresented: $viewModel.isAuthenticated) {
-                TopTabView(viewModel: viewModel)
+                TopTabView(authVM: viewModel)
                     .navigationBarBackButtonHidden()
             }
         }

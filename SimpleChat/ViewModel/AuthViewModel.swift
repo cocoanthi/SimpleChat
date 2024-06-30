@@ -83,7 +83,6 @@ class AuthViewModel: ObservableObject {
                     Logger.error(error: error)
                     return
                 }
-                Logger.info("success")
             }
         } catch {
             Logger.error(error: error)

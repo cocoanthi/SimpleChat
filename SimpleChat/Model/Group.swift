@@ -17,6 +17,8 @@ struct Group: Codable, Identifiable, Equatable {
     var uids: [String]
     var createAt: Date
     
+    var messages: [MessageElement] = []
+    
     enum CodingKeys: String, CodingKey {
         case id
         case groupId

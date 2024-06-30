@@ -29,7 +29,7 @@ struct SimpleChatApp: App {
             NavigationView {
                 // ログイン状態によって画面遷移するページを変更する
                 if viewModel.isAuthenticated {
-                    TopTabView(viewModel: viewModel)
+                    TopTabView(authVM: viewModel)
                 } else {
                     SignInView(viewModel: viewModel)
                 }

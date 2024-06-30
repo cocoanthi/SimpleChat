@@ -33,7 +33,7 @@ struct SignInView: View {
 
                 if viewModel.isAuthenticated {
                     // ログイン後のページに遷移
-                    TopTabView(viewModel: viewModel)
+                    TopTabView(authVM: viewModel)
                 }
 
                 // 新規登録画面への遷移ボタン
