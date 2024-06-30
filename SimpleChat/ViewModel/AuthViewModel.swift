@@ -10,7 +10,18 @@ import FirebaseAuth
 import FirebaseFirestore
 
 class AuthViewModel: ObservableObject {
-    @Published var isAuthenticated = false
+    @Published var authState = AuthState.unknown {
+        willSet {
+            switch newValue {
+            case .authenticated:
+                isAuthenticated = true
+            case .unauthenticated, .unknown:
+                isAuthenticated = false
+            }
+        }
+    }
+
+    @Published var isAuthenticated: Bool = false
     @Published var showsAlert = false
     private let collectionName = "users"
 
@@ -21,7 +32,7 @@ class AuthViewModel: ObservableObject {
     private func observeAuthChanges() {
         Auth.auth().addStateDidChangeListener { [weak self] _, user in
             DispatchQueue.main.async {
-                self?.isAuthenticated = user != nil
+                self?.authState = (user != nil) ? .authenticated : .unauthenticated
             }
         }
     }
@@ -30,7 +41,7 @@ class AuthViewModel: ObservableObject {
         Auth.auth().signIn(withEmail: email, password: password) { [weak self] result, error in
             DispatchQueue.main.async {
                 if result != nil, error == nil {
-                    self?.isAuthenticated = true
+                    self?.authState = .authenticated
                 } else {
                     self?.showsAlert = true
                 }
@@ -42,7 +53,7 @@ class AuthViewModel: ObservableObject {
         Auth.auth().createUser(withEmail: email, password: password) { [weak self] result, error in
             DispatchQueue.main.async {
                 if result != nil, error == nil {
-                    self?.isAuthenticated = true
+                    self?.authState = .authenticated
                     self?.addUser(name: name, email: email)
                 } else {
                     self?.showsAlert = true
@@ -62,7 +73,7 @@ class AuthViewModel: ObservableObject {
     func signOut() {
         do {
             try Auth.auth().signOut()
-            isAuthenticated = false
+            authState = .unauthenticated
         } catch let signOutError as NSError {
             print("Error signing out: %@", signOutError)
         }

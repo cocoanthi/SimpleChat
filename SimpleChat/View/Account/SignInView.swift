@@ -31,7 +31,7 @@ struct SignInView: View {
                     Text("認証に失敗しました")
                 }
 
-                if viewModel.isAuthenticated {
+                if viewModel.authState == .authenticated {
                     // ログイン後のページに遷移
                     TopTabView(authVM: viewModel)
                 }

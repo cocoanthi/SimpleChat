@@ -19,10 +19,13 @@ class HistoryViewModel: ObservableObject {
     
     let uid: String
             
+    /// 重複判別用ID
     private static var groupDuplicationId = ""
     private static var messageDuplicationId = ""
+    
     private let db = Firestore.firestore()
 
+    /// FireStore監視リスナー
     private var groupsListener: ListenerRegistration?
     private var messagesListener: ListenerRegistration?
     private var userListener: ListenerRegistration?
@@ -89,13 +92,7 @@ class HistoryViewModel: ObservableObject {
                             guard Self.groupDuplicationId != group.id else { return }
                             Self.groupDuplicationId = group.id ?? ""
 
-                            let isExist = CommonViewModel.shared.user?.groups.contains { target in
-                                if target.id == group.id {
-                                    return true
-                                } else {
-                                    return false
-                                }
-                            } ?? false
+                            let isExist = CommonViewModel.shared.user?.groups.contains { $0.id == group.id } ?? false
                             // 二重登録はしない
                             if group.uids.contains(self.uid) && !isExist {
                                 DispatchQueue.main.async {

@@ -12,7 +12,7 @@ struct SignUpView: View {
     @State private var email: String = ""
     @State private var password: String = ""
     @ObservedObject var viewModel: AuthViewModel
-    
+
     var body: some View {
         NavigationStack {
             VStack {
