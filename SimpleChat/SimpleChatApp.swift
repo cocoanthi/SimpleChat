@@ -23,6 +23,19 @@ struct SimpleChatApp: App {
     // register app delegate for Firebase setup
     @UIApplicationDelegateAdaptor(AppDelegate.self) var delegate
     @StateObject var viewModel = AuthViewModel()
+    
+    // バー系は全て統一したいためUIKitで設定
+    init() {
+        let tabAppearance: UITabBarAppearance = UITabBarAppearance()
+        tabAppearance.backgroundColor = UIColor(Color.ThemeColorLevel2)
+        UITabBar.appearance().scrollEdgeAppearance = tabAppearance
+        UITabBar.appearance().standardAppearance = tabAppearance
+        
+        let barAppearance: UINavigationBarAppearance = UINavigationBarAppearance()
+        barAppearance.backgroundColor = UIColor(Color.ThemeColorLevel4)
+        UINavigationBar.appearance().scrollEdgeAppearance = barAppearance
+        UINavigationBar.appearance().standardAppearance = barAppearance
+    }
 
     var body: some Scene {
         WindowGroup {

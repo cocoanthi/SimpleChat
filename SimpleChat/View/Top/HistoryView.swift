@@ -24,7 +24,6 @@ struct HistoryView: View {
         
     var body: some View {
         NavigationStack(path: $path){
-            Divider()
             ScrollView {
                 VStack(spacing: .zero) {
                     ForEach(commonViewmodel.user?.groups ?? []) { group in
@@ -40,6 +39,7 @@ struct HistoryView: View {
                     }
                 }
             }
+            .backGroundModifier(color: Color.ThemeColorLevel7)
             .navigationBarTitle("履歴", displayMode: .inline)
             .navigationBarBackButtonHidden(true)
             // トーク押下時の処理

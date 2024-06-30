@@ -46,15 +46,16 @@ struct MessageView: View {
                         proxy.scrollTo(lastId, anchor: .bottom)
                     }
                 }
+                .backGroundModifier(color: Color.ThemeColorLevel7)
                 .onTapGesture {
                     UIApplication.shared.closeKeyboard()
                 }
             }
             .navigationBarTitle("Chats", displayMode: .inline)
-            
             Divider()
             inputMessageView()
                 .padding()
+                .background(Color.ThemeColorLevel2)
         }
     }
     
