@@ -23,10 +23,6 @@ struct TopTabView: View {
                 .tabItem {
                     Label(TabKind.history.rawValue, systemImage: "clock")
                 }
-                .onAppear {
-                    // TODO: currentUserが持っているチャット情報を取得
-                }
-            
             SettingView(viewModel: authVM)
                 .tabItem {
                     Label(TabKind.setting.rawValue, systemImage: "gearshape")

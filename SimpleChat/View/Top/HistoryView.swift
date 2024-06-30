@@ -32,7 +32,7 @@ struct HistoryView: View {
                                 path.append(NavigationInfo(groupId: group.groupId, uid: viewModel.uid, messages: group.messages))
                             },
                             label: {
-                                historyRow(group.name, group.groupId, group.createAt)
+                                historyRow(group.name, group.messages.last?.message ?? "", group.createAt)
                             }
                         )
                         Divider()
@@ -74,11 +74,27 @@ struct HistoryView: View {
     }
     
     private func historyRow(_ name: String, _ lastMsg: String, _ createAt: Date) -> some View {
-        VStack(spacing: .zero) {
-            Text(name)
-            HStack(spacing: .zero) {
+        HStack(spacing: .zero) {
+            // TODO: グループアイコン的な
+            Image(systemName: "photo.artframe.circle.fill")
+                .padding()
+
+            VStack(alignment: .leading, spacing: .zero) {
+                HStack(spacing: .zero) {
+                    /// グループ名
+                    Text(name)
+                        .foregroundColor(.black)
+                    Spacer()
+                    /// 最終更新時間
+                    Text(clipDate(from: createAt))
+                        .font(.footnote)
+                        .foregroundColor(.gray)
+                        .padding(.trailing)
+                }
+                /// 最終更新内容
                 Text(lastMsg)
-                Text(clipDate(from: createAt))
+                    .font(.footnote)
+                    .foregroundColor(.gray)
             }
         }
     }
