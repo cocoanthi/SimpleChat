@@ -19,11 +19,13 @@ class HistoryViewModel: ObservableObject {
     
     let uid: String
             
+    private static var groupDuplicationId = ""
+    private static var messageDuplicationId = ""
+    private let db = Firestore.firestore()
+
     private var groupsListener: ListenerRegistration?
     private var messagesListener: ListenerRegistration?
     private var userListener: ListenerRegistration?
-
-    private let db = Firestore.firestore()
 
     init() {
         self.uid = Auth.auth().currentUser?.uid ?? ""
@@ -82,8 +84,11 @@ class HistoryViewModel: ObservableObject {
                 querySnapshot.documentChanges.forEach { doc in
                     if doc.type == .added {
                         do {
-                            // Codableを使って構造体に変換する
                             let group = try doc.document.data(as: Group.self)
+                            // 同じ通知が複数回飛んでくる場合があるため重複処理
+                            guard Self.groupDuplicationId != group.id else { return }
+                            Self.groupDuplicationId = group.id ?? ""
+
                             let isExist = CommonViewModel.shared.user?.groups.contains { target in
                                 if target.id == group.id {
                                     return true
@@ -119,6 +124,10 @@ class HistoryViewModel: ObservableObject {
                     if doc.type == .added {
                         do {
                             let message = try doc.document.data(as: MessageElement.self)
+                            // 同じ通知が複数回飛んでくる場合があるため重複処理
+                            guard Self.messageDuplicationId != message.id else { return }
+                            Self.messageDuplicationId = message.id ?? ""
+                            
                             CommonViewModel.shared.user?.groups.indices.forEach {
                                 if CommonViewModel.shared.user?.groups[$0].groupId == message.groupId {
                                     CommonViewModel.shared.user?.groups[$0].messages.append(message)
