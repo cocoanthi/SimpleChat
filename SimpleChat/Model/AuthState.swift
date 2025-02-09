@@ -7,8 +7,12 @@
 
 import Foundation
 
+/// 認証状態
 enum AuthState {
+    /// 不明
     case unknown
+    /// 認証済み
     case authenticated
+    /// 未認証
     case unauthenticated
 }

@@ -10,11 +10,11 @@ import FirebaseFirestoreSwift
 
 struct MessageElement: Codable, Identifiable, Equatable, Hashable {
     @DocumentID var id: String?
-    /// どのグループのメッセージか
+    /// どのグループのメッセージかを特定するためのID
     var groupId: String
-    /// 誰が送信したメッセージか
+    /// 誰が送信したメッセージかを特定するためのID
     var uid: String
-    /// 内容
+    /// メッセージ内容
     var message: String
     /// 送信日時
     var createAt: Date

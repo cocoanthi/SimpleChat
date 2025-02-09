@@ -27,11 +27,14 @@ struct HistoryView: View {
             ScrollView {
                 VStack(spacing: .zero) {
                     ForEach(commonViewmodel.user?.groups ?? []) { group in
+                        // グループ行（ボタン）
                         Button(
                             action: {
+                                // ボタン押下時、次の画面へ渡す情報を設定
                                 path.append(NavigationInfo(groupId: group.groupId, uid: viewModel.uid, messages: group.messages))
                             },
                             label: {
+                                // グループ行に表示する情報
                                 historyRow(group.name, group.messages.last?.message ?? "", group.messages.last?.createAt ?? group.createAt)
                             }
                         )
@@ -44,6 +47,7 @@ struct HistoryView: View {
             .navigationBarBackButtonHidden(true)
             // トーク押下時の処理
             .navigationDestination(for: NavigationInfo.self, destination: { navigationInfo in
+                // チャット画面へ遷移
                 MessageView(groupId: navigationInfo.groupId, uid: navigationInfo.uid)
             })
             .toolbar {
@@ -73,6 +77,7 @@ struct HistoryView: View {
         }
     }
     
+    /// グループ行
     private func historyRow(_ name: String, _ lastMsg: String, _ createAt: Date) -> some View {
         HStack(spacing: .zero) {
             // TODO: グループアイコン的な
@@ -81,17 +86,17 @@ struct HistoryView: View {
 
             VStack(alignment: .leading, spacing: .zero) {
                 HStack(spacing: .zero) {
-                    /// グループ名
+                    // グループ名
                     Text(name)
                         .foregroundColor(.black)
                     Spacer()
-                    /// 最終更新時間
+                    // 最終更新時間
                     Text(clipDate(from: createAt))
                         .font(.footnote)
                         .foregroundColor(.gray)
                         .padding(.trailing)
                 }
-                /// 最終更新内容
+                // 最終更新内容
                 Text(lastMsg)
                     .font(.footnote)
                     .foregroundColor(.gray)
@@ -99,6 +104,7 @@ struct HistoryView: View {
         }
     }
     
+    /// 日付のフォーマット
     private func clipDate(from: Date) -> String {
         let dateFormatter = DateFormatter()
         dateFormatter.locale = Locale(identifier: "ja_JP")

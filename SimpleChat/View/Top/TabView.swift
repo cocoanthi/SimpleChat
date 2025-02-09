@@ -19,10 +19,12 @@ struct TopTabView: View {
 
     var body: some View {
         TabView {
+            // メッセージ一覧
             HistoryView(viewModel: historyVM)
                 .tabItem {
                     Label(TabKind.history.rawValue, systemImage: "clock")
                 }
+            // 設定
             SettingView(viewModel: authVM)
                 .tabItem {
                     Label(TabKind.setting.rawValue, systemImage: "gearshape")

@@ -15,7 +15,7 @@ struct MessageRow: View {
     
     var body: some View {
         HStack(spacing: .zero) {
-            if isMyMessage {
+            if isMyMessage { // 自身のメッセージ（画面右側）
                 Spacer()
                 VStack(alignment: .trailing, spacing: .zero) {
                     Text(message)
@@ -23,7 +23,7 @@ struct MessageRow: View {
                     Spacer().frame(height: 4)
                     infoContentView()
                 }
-            } else {
+            } else { // 相手のメッセージ（画面左側）
                 VStack(alignment: .leading, spacing: .zero) {
                     Text(message)
                         .modifier(ChatRowModifier(background: Color(.systemGray5), foreground: .black))
@@ -37,13 +37,14 @@ struct MessageRow: View {
         .padding(.vertical, 4)
     }
     
+    /// 送信日時
     private func infoContentView() -> some View {
         VStack(spacing: .zero) {
-            if isMyMessage {
+            if isMyMessage { // 自身が送信した日時
                 Text(date.text)
                     .font(.footnote)
                     .foregroundColor(.gray)
-            } else {
+            } else { // 相手が送信した日時
                 HStack(spacing: .zero) {
                     Text(user)
                         .font(.footnote)

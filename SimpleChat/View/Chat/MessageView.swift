@@ -12,7 +12,6 @@ struct MessageView: View {
     @StateObject var commonViewModel = CommonViewModel.shared
     @StateObject private var messageVM: MessageViewModel
     @State private var typeMessage = ""
-    @State private var scrolled = false
     
     init(groupId: String, uid: String) {
         self.uid = uid
@@ -25,6 +24,7 @@ struct MessageView: View {
                 ScrollView {
                     VStack(spacing: .zero) {
                         ForEach(commonViewModel.user?.groups[safe: messageVM.groupIndex]?.messages ?? []) { message in
+                            // メッセージ行（相手/自身両方）
                             MessageRow(
                                 message: message.message,
                                 isMyMessage: message.uid == uid,
@@ -53,16 +53,20 @@ struct MessageView: View {
             }
             .navigationBarTitle("Chats", displayMode: .inline)
             Divider()
+            // メッセージ送信画面
             inputMessageView()
                 .padding()
                 .background(Color.ThemeColorLevel2)
         }
     }
     
+    /// メッセージ送信画面
     private func inputMessageView() -> some View {
         HStack(spacing: 4) {
+            // メッセージ入力
             TextField("Message", text: $typeMessage)
                 .textFieldStyle(RoundedBorderTextFieldStyle())
+            // 送信ボタン
             Button {
                 guard !typeMessage.isEmpty else { return }
                 messageVM.addMessage(message: typeMessage, uid: uid)
