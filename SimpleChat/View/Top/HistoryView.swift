@@ -32,7 +32,7 @@ struct HistoryView: View {
                                 path.append(NavigationInfo(groupId: group.groupId, uid: viewModel.uid, messages: group.messages))
                             },
                             label: {
-                                historyRow(group.name, group.messages.last?.message ?? "", group.createAt)
+                                historyRow(group.name, group.messages.last?.message ?? "", group.messages.last?.createAt ?? group.createAt)
                             }
                         )
                         Divider()
