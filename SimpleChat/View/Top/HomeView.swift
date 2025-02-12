@@ -17,8 +17,13 @@ struct HomeView: View {
     @StateObject var viewModel: HomeViewModel
     
     @State var path = NavigationPath()
+    @State var selectedUser: User? {
+        didSet {
+            showsAlert = selectedUser != nil
+        }
+    }
 
-    @State private var isShowAlert: Bool = false
+    @State private var showsAlert: Bool = false
         
     var body: some View {
         NavigationStack(path: $path){
@@ -30,7 +35,7 @@ struct HomeView: View {
                         Button(
                             action: {
                                 // チャット画面へ遷移する確認アラート表示
-                                isShowAlert.toggle()
+                                selectedUser = user
                             },
                             label: {
                                 // グループ行に表示する情報
@@ -50,8 +55,10 @@ struct HomeView: View {
                 // チャット画面へ遷移
                 MessageView(groupId: navigationInfo.groupId, uid: navigationInfo.uid)
             })
-            .alert("[]さんとチャットしますか", isPresented: $isShowAlert) {
-                Button("Cancel") { isShowAlert.toggle() }
+            .alert("\(selectedUser?.name ?? "")さんとチャットしますか", isPresented: $showsAlert) {
+                Button("Cancel") {
+                    selectedUser = nil
+                }
                 Button("OK") {
                     // FIXME: インジケーター表示したい
                     // addGroup必要

@@ -24,7 +24,7 @@ struct TopTabView: View {
             // ホーム
             HomeView(viewModel: homeVM)
                 .tabItem {
-                    Label(TabKind.setting.rawValue, systemImage: "house")
+                    Label(TabKind.home.rawValue, systemImage: "house")
                 }
             // メッセージ一覧
             HistoryView(viewModel: historyVM)
