@@ -50,6 +50,7 @@ struct HistoryView: View {
                 // チャット画面へ遷移
                 MessageView(groupId: navigationInfo.groupId, uid: navigationInfo.uid)
             })
+            /*
             .toolbar {
                 // 画面右上にトーク追加ボタン
                 ToolbarItem(placement: .navigationBarTrailing) {
@@ -74,6 +75,7 @@ struct HistoryView: View {
                     }
                 }
             }
+             */
         }
     }
     

@@ -14,9 +14,11 @@ class HomeViewModel: ObservableObject {
         case groups
         case users
     }
-
-    var users: [User] = []
+    /// ユーザー選択によって作成されたグループ
+    @Published var createdGroup: Group?
     
+    /// 全ユーザー
+    var users: [User] = []
     
     private let db = Firestore.firestore()
     
@@ -31,18 +33,27 @@ class HomeViewModel: ObservableObject {
         userListener?.remove()
     }
     
-    func addGroup(toUid: String, groupId: String = UUID().uuidString, groupName: String, createAt: Date = Date()) {
-        guard let uid = CommonViewModel.shared.user?.uid else {
-            Logger.error("uid not found")
+    func addGroup(
+        myUid: String?,
+        toUid: String?,
+        groupId: String = UUID().uuidString,
+        groupName: String?,
+        createAt: Date = Date()
+    ) {
+        guard let myUid, let toUid, let groupName else {
+            Logger.error("addGroup failure.")
+            // TODO: 失敗アラート表示
             return
         }
         do {
-            let group = Group(groupId: groupId, name: groupName, uids: [uid, toUid], createAt: createAt)
+            let group = Group(groupId: groupId, name: groupName, uids: [myUid, toUid], createAt: createAt)
             try db.collection(CollectionName.groups.rawValue).addDocument(from: group) { error in
                 if let error = error {
+                    // TODO: 失敗アラート表示
                     Logger.error(error: error)
                     return
                 }
+                self.createdGroup = group
                 // TODO: 成功アラート表示
                 Logger.info("success")
             }

@@ -61,12 +61,19 @@ struct HomeView: View {
                 }
                 Button("OK") {
                     // FIXME: インジケーター表示したい
-                    // addGroup必要
-                    
-                    // 次の画面へ渡す情報を設定
-//                    path.append(NavigationInfo(groupId: group.groupId, uid: viewModel.uid, messages: group.messages))
+                    // チャットグループに追加
+                    viewModel.addGroup(
+                        myUid: commonViewmodel.user?.uid,
+                        toUid: selectedUser?.uid,
+                        groupName: selectedUser?.name
+                    )
                 }
             }
+        }
+        .onReceive(viewModel.$createdGroup) { newValue in
+            guard let newValue else { return }
+            // groupが作成された場合は次のチャット画面へ渡す情報を設定
+            path.append(NavigationInfo(groupId: newValue.groupId, uid: commonViewmodel.user?.uid ?? "", messages: newValue.messages))
         }
     }
 }
