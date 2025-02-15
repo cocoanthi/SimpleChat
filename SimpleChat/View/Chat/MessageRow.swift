@@ -10,7 +10,6 @@ import SwiftUI
 struct MessageRow: View {
     let message: String
     let isMyMessage: Bool
-    let user: String
     let date: Date
     
     var body: some View {
@@ -45,14 +44,9 @@ struct MessageRow: View {
                     .font(.footnote)
                     .foregroundColor(.gray)
             } else { // 相手が送信した日時
-                HStack(spacing: .zero) {
-                    Text(user)
-                        .font(.footnote)
-                    Spacer().frame(width: 8)
-                    Text(date.text)
-                        .font(.footnote)
-                        .foregroundColor(.gray)
-                }
+                Text(date.text)
+                    .font(.footnote)
+                    .foregroundColor(.gray)
             }
         }
     }
@@ -78,13 +72,11 @@ struct MyPreviewProvider_Previews: PreviewProvider {
             MessageRow(
                 message: "Hello",
                 isMyMessage: false,
-                user: "Foo",
                 date: Date()
             )
             MessageRow(
                 message: "Hello",
                 isMyMessage: true,
-                user: "Bar",
                 date: Date()
             )
         }

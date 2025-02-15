@@ -47,6 +47,22 @@ class HistoryViewModel: ObservableObject {
         userListener?.remove()
     }
     
+    /// グループ削除
+    /// - Parameter groupIds: 削除したいgroupId配列
+    func deleteGroup(groupIds: [String]) {
+        groupIds.forEach {
+            db.collection(CollectionName.groups.rawValue).whereField("groupId", isEqualTo: $0).getDocuments() { (querySnapshot, err) in
+                if let err = err {
+                    print("Error getting documents: \(err)")
+                } else {
+                    for document in querySnapshot!.documents {
+                        document.reference.delete()
+                    }
+                }
+            }
+        }
+    }
+    
     /// ユーザー情報取得
     private func readUser() {
         // FireStoreからユーザー情報を監視
@@ -108,6 +124,15 @@ class HistoryViewModel: ObservableObject {
                         } catch {
                             Logger.error(error: error)
                         }
+                    } else if doc.type == .removed {
+                        do {
+                            let group = try doc.document.data(as: Group.self)
+                            DispatchQueue.main.async {
+                                CommonViewModel.shared.user?.groups.removeAll(where: { $0.id == group.id })
+                            }
+                        } catch {
+                            Logger.error(error: error)
+                        }
                     }
                 }
             }
@@ -142,22 +167,5 @@ class HistoryViewModel: ObservableObject {
                     }
                 }
             }
-    }
-    
-    func addGroup(toUid: String, groupId: String = UUID().uuidString, groupName: String, createAt: Date = Date()) {
-        do {
-            let group = Group(groupId: groupId, name: groupName, uids: [uid, toUid], createAt: createAt)
-            try db.collection(CollectionName.groups.rawValue).addDocument(from: group) { error in
-                if let error = error {
-                    Logger.error(error: error)
-                    return
-                }
-                // TODO: 成功アラート表示
-                Logger.info("success")
-            }
-        } catch {
-            // TODO: 失敗アラート表示
-            Logger.error(error: error)
-        }
     }
 }

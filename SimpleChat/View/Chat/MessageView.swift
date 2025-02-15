@@ -24,11 +24,11 @@ struct MessageView: View {
                 ScrollView {
                     VStack(spacing: .zero) {
                         ForEach(commonViewModel.user?.groups[safe: messageVM.groupIndex]?.messages ?? []) { message in
+                            let isMyMessage = message.uid == uid
                             // メッセージ行（相手/自身両方）
                             MessageRow(
                                 message: message.message,
-                                isMyMessage: message.uid == uid,
-                                user: "test",
+                                isMyMessage: isMyMessage,
                                 date: message.createAt
                             )
                             .id(message.id)
