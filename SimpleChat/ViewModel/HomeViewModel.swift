@@ -33,20 +33,42 @@ class HomeViewModel: ObservableObject {
         userListener?.remove()
     }
     
+    /// グループ情報追加。すでに重複したグループがある場合は追加しない。
+    /// - Parameters:
+    ///   - myUid: 自身のUID
+    ///   - toUid: チャット相手のUID
+    ///   - groupId: 登録するID
+    ///   - groupName: 登録するグループ名
+    ///   - createAt: 作成日時
     func addGroup(
-        myUid: String?,
+        user: User?,
         toUid: String?,
         groupId: String = UUID().uuidString,
         groupName: String?,
         createAt: Date = Date()
     ) {
-        guard let myUid, let toUid, let groupName else {
+        guard let user, let toUid, let groupName else {
             Logger.error("addGroup failure.")
             // TODO: 失敗アラート表示
             return
         }
+        
+        // 重複したグループがあるか確認
+        let newGroup : Set = [user.uid, toUid]
+        let existsGroup: Group? = user.groups.filter {
+            let existGroup: Set = Set($0.uids)
+            return newGroup == existGroup
+        }.first
+        
+        // グループが存在する場合は存在するグループをプロパティに入れて早期return
+        if let existsGroup {
+            createdGroup = existsGroup
+            return
+        }
+        
+        // グループが存在しない場合は新規に登録
+        let group = Group(groupId: groupId, name: groupName, uids: [user.uid, toUid], createAt: createAt)
         do {
-            let group = Group(groupId: groupId, name: groupName, uids: [myUid, toUid], createAt: createAt)
             try db.collection(CollectionName.groups.rawValue).addDocument(from: group) { error in
                 if let error = error {
                     // TODO: 失敗アラート表示

@@ -63,7 +63,7 @@ struct HomeView: View {
                     // FIXME: インジケーター表示したい
                     // チャットグループに追加
                     viewModel.addGroup(
-                        myUid: commonViewmodel.user?.uid,
+                        user: commonViewmodel.user,
                         toUid: selectedUser?.uid,
                         groupName: selectedUser?.name
                     )
