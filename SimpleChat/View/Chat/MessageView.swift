@@ -51,7 +51,8 @@ struct MessageView: View {
                     UIApplication.shared.closeKeyboard()
                 }
             }
-            .navigationBarTitle("Chats", displayMode: .inline)
+            .navigationBarTitleDisplayMode(.inline)
+            .toolbar { CustomToolbarContent("チャット") }
             Divider()
             // メッセージ送信画面
             inputMessageView()
@@ -70,8 +71,8 @@ struct MessageView: View {
             Button {
                 guard !typeMessage.isEmpty else { return }
                 messageVM.addMessage(message: typeMessage, uid: uid)
-                typeMessage = ""
                 UIApplication.shared.closeKeyboard()
+                typeMessage = ""
             } label: {
                 Image(systemName: "arrow.up.circle.fill")
             }

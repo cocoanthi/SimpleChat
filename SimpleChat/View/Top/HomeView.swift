@@ -47,8 +47,9 @@ struct HomeView: View {
                     }
                 }
             }
-            .navigationBarTitle("ホーム", displayMode: .inline)
             .backGroundModifier(color: Color.ThemeColorLevel3)
+            .navigationBarTitleDisplayMode(.inline)
+            .toolbar { CustomToolbarContent("ホーム") }
             .navigationBarBackButtonHidden(true)
             // トーク押下時の処理
             .navigationDestination(for: NavigationInfo.self, destination: { navigationInfo in

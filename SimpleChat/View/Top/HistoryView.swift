@@ -60,8 +60,9 @@ struct HistoryView: View {
                     }
                 }
             }
-            .navigationBarTitle("履歴", displayMode: .inline)
             .backGroundModifier(color: Color.ThemeColorLevel3)
+            .navigationBarTitleDisplayMode(.inline)
+            .toolbar { CustomToolbarContent("履歴") }
             .navigationBarBackButtonHidden(true)
             // トーク押下時の処理
             .navigationDestination(for: NavigationInfo.self, destination: { navigationInfo in

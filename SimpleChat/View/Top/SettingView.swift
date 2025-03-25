@@ -10,26 +10,33 @@ import SwiftUI
 struct SettingView: View {
     @ObservedObject var viewModel: AuthViewModel
     private static let COULD_NOT_GET = "取得できませんでした"
+    @State var path = NavigationPath()
     
     var body: some View {
-        VStack(spacing: .zero) {
-            Spacer()
-            // ユーザー情報
-            HStack(spacing: .zero) {
-                VStack(spacing: 6) {
-                    userItem(title: "Account : ", content: CommonViewModel.shared.user?.name)
-                    userItem(title: "Email : ", content: CommonViewModel.shared.user?.email)
-                    userItem(title: "ID : ", content: CommonViewModel.shared.user?.uid)
+        NavigationStack(path: $path) {
+            VStack(spacing: .zero) {
+                Spacer()
+                // ユーザー情報
+                HStack(spacing: .zero) {
+                    VStack(spacing: 6) {
+                        userItem(title: "Account : ", content: CommonViewModel.shared.user?.name)
+                        userItem(title: "Email : ", content: CommonViewModel.shared.user?.email)
+                        userItem(title: "ID : ", content: CommonViewModel.shared.user?.uid)
+                    }
+                    Spacer()
                 }
                 Spacer()
+                // ログアウト
+                Button("ログアウト") {
+                    viewModel.signOut()
+                }
+                .buttonStyle(.bordered)
+                Spacer()
             }
-            Spacer()
-            // ログアウト
-            Button("ログアウト") {
-                viewModel.signOut()
-            }
-            .buttonStyle(.bordered)
-            Spacer()
+            .backGroundModifier(color: Color.ThemeColorLevel3)
+            .navigationBarTitleDisplayMode(.inline)
+            .toolbar { CustomToolbarContent("設定") }
+            .navigationBarBackButtonHidden(true)
         }
     }
     

@@ -19,6 +19,7 @@
 		262D8A932C314B7700BA195E /* AuthState.swift in Sources */ = {isa = PBXBuildFile; fileRef = 262D8A922C314B7700BA195E /* AuthState.swift */; };
 		262D8A952C31BB4D00BA195E /* View+.swift in Sources */ = {isa = PBXBuildFile; fileRef = 262D8A942C31BB4D00BA195E /* View+.swift */; };
 		262D8A972C31BF0B00BA195E /* Color+.swift in Sources */ = {isa = PBXBuildFile; fileRef = 262D8A962C31BF0B00BA195E /* Color+.swift */; };
+		263EDE662D92EFA800DE4E7C /* CustomToolbarContent.swift in Sources */ = {isa = PBXBuildFile; fileRef = 263EDE652D92EFA800DE4E7C /* CustomToolbarContent.swift */; };
 		2644A1162C29B2BA00152BC3 /* Collection+.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2644A1152C29B2B900152BC3 /* Collection+.swift */; };
 		2644A1182C29D0C400152BC3 /* CommonViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2644A1172C29D0C400152BC3 /* CommonViewModel.swift */; };
 		2679ADBB2D5B51B400F1081A /* HomeView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2679ADBA2D5B51B400F1081A /* HomeView.swift */; };
@@ -57,6 +58,7 @@
 		262D8A922C314B7700BA195E /* AuthState.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AuthState.swift; sourceTree = "<group>"; };
 		262D8A942C31BB4D00BA195E /* View+.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "View+.swift"; sourceTree = "<group>"; };
 		262D8A962C31BF0B00BA195E /* Color+.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Color+.swift"; sourceTree = "<group>"; };
+		263EDE652D92EFA800DE4E7C /* CustomToolbarContent.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomToolbarContent.swift; sourceTree = "<group>"; };
 		2644A1152C29B2B900152BC3 /* Collection+.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Collection+.swift"; sourceTree = "<group>"; };
 		2644A1172C29D0C400152BC3 /* CommonViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CommonViewModel.swift; sourceTree = "<group>"; };
 		2679ADBA2D5B51B400F1081A /* HomeView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeView.swift; sourceTree = "<group>"; };
@@ -121,6 +123,14 @@
 				26A028D62C14579F007F4446 /* MessageView.swift */,
 			);
 			path = Chat;
+			sourceTree = "<group>";
+		};
+		263EDE642D92EF8600DE4E7C /* Common */ = {
+			isa = PBXGroup;
+			children = (
+				263EDE652D92EFA800DE4E7C /* CustomToolbarContent.swift */,
+			);
+			path = Common;
 			sourceTree = "<group>";
 		};
 		26A028A32C144404007F4446 = {
@@ -198,6 +208,7 @@
 		26A028CF2C1449C8007F4446 /* View */ = {
 			isa = PBXGroup;
 			children = (
+				263EDE642D92EF8600DE4E7C /* Common */,
 				2629C6F82C16001F00C2D4C1 /* Chat */,
 				2629C6F72C15FF9000C2D4C1 /* Top */,
 				2629C6EC2C15B65A00C2D4C1 /* Account */,
@@ -319,6 +330,7 @@
 				267FB3F12C17435F00B51EEE /* User.swift in Sources */,
 				26A028B02C144404007F4446 /* SimpleChatApp.swift in Sources */,
 				2629C6FA2C16004600C2D4C1 /* HistoryView.swift in Sources */,
+				263EDE662D92EFA800DE4E7C /* CustomToolbarContent.swift in Sources */,
 				2644A1162C29B2BA00152BC3 /* Collection+.swift in Sources */,
 				2629C6F02C15B69D00C2D4C1 /* ResetPasswordView.swift in Sources */,
 				262D8A932C314B7700BA195E /* AuthState.swift in Sources */,
