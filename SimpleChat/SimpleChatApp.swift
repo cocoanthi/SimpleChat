@@ -27,12 +27,12 @@ struct SimpleChatApp: App {
     // バー系は全て統一したいためUIKitで設定
     init() {
         let tabAppearance: UITabBarAppearance = UITabBarAppearance()
-        tabAppearance.backgroundColor = UIColor(Color.ThemeColorLevel2)
+        tabAppearance.backgroundColor = UIColor(Color.ThemeColorLevel1)
         UITabBar.appearance().scrollEdgeAppearance = tabAppearance
         UITabBar.appearance().standardAppearance = tabAppearance
         
         let barAppearance: UINavigationBarAppearance = UINavigationBarAppearance()
-        barAppearance.backgroundColor = UIColor(Color.ThemeColorLevel4)
+        barAppearance.backgroundColor = UIColor(Color.ThemeColorLevel2)
         UINavigationBar.appearance().scrollEdgeAppearance = barAppearance
         UINavigationBar.appearance().standardAppearance = barAppearance
     }

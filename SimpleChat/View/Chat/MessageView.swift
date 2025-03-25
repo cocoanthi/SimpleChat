@@ -46,7 +46,7 @@ struct MessageView: View {
                         proxy.scrollTo(lastId, anchor: .bottom)
                     }
                 }
-                .backGroundModifier(color: Color.ThemeColorLevel7)
+                .backGroundModifier(color: Color.ThemeColorLevel3)
                 .onTapGesture {
                     UIApplication.shared.closeKeyboard()
                 }
@@ -56,7 +56,7 @@ struct MessageView: View {
             // メッセージ送信画面
             inputMessageView()
                 .padding()
-                .background(Color.ThemeColorLevel2)
+                .background(Color.ThemeColorLevel1)
         }
     }
     
