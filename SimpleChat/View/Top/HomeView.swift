@@ -26,7 +26,7 @@ struct HomeView: View {
     @State private var showsAlert: Bool = false
         
     var body: some View {
-        NavigationStack(path: $path){
+        NavigationStack(path: $path) {
             ScrollView {
                 VStack(spacing: .zero) {
                     // ユーザー一覧

@@ -28,7 +28,7 @@ struct SignUpView: View {
                     .textFieldStyle(RoundedBorderTextFieldStyle())
                     .padding()
                 
-                Button("Sign Up") {
+                Button("アカウント作成") {
                     viewModel.signUp(name: name, email: email, password: password)
                 }
             }
@@ -36,6 +36,8 @@ struct SignUpView: View {
                 TopTabView(authVM: viewModel)
                     .navigationBarBackButtonHidden()
             }
+            .backGroundModifier(color: Color.ThemeColorLevel3)
+            .toolbar { CustomToolbarContent("アカウント作成") }
         }
     }
 }
