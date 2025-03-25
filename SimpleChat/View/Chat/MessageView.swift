@@ -12,7 +12,6 @@ struct MessageView: View {
     @StateObject var commonViewModel = CommonViewModel.shared
     @StateObject private var messageVM: MessageViewModel
     @State private var typeMessage = ""
-    @State private var scrolled = false
     
     init(groupId: String, uid: String) {
         self.uid = uid
@@ -25,10 +24,11 @@ struct MessageView: View {
                 ScrollView {
                     VStack(spacing: .zero) {
                         ForEach(commonViewModel.user?.groups[safe: messageVM.groupIndex]?.messages ?? []) { message in
+                            let isMyMessage = message.uid == uid
+                            // メッセージ行（相手/自身両方）
                             MessageRow(
                                 message: message.message,
-                                isMyMessage: message.uid == uid,
-                                user: "test",
+                                isMyMessage: isMyMessage,
                                 date: message.createAt
                             )
                             .id(message.id)
@@ -46,28 +46,33 @@ struct MessageView: View {
                         proxy.scrollTo(lastId, anchor: .bottom)
                     }
                 }
-                .backGroundModifier(color: Color.ThemeColorLevel7)
+                .backGroundModifier(color: Color.ThemeColorLevel3)
                 .onTapGesture {
                     UIApplication.shared.closeKeyboard()
                 }
             }
-            .navigationBarTitle("Chats", displayMode: .inline)
+            .navigationBarTitleDisplayMode(.inline)
+            .toolbar { CustomToolbarContent("チャット") }
             Divider()
+            // メッセージ送信画面
             inputMessageView()
                 .padding()
-                .background(Color.ThemeColorLevel2)
+                .background(Color.ThemeColorLevel1)
         }
     }
     
+    /// メッセージ送信画面
     private func inputMessageView() -> some View {
         HStack(spacing: 4) {
+            // メッセージ入力
             TextField("Message", text: $typeMessage)
                 .textFieldStyle(RoundedBorderTextFieldStyle())
+            // 送信ボタン
             Button {
                 guard !typeMessage.isEmpty else { return }
                 messageVM.addMessage(message: typeMessage, uid: uid)
-                typeMessage = ""
                 UIApplication.shared.closeKeyboard()
+                typeMessage = ""
             } label: {
                 Image(systemName: "arrow.up.circle.fill")
             }

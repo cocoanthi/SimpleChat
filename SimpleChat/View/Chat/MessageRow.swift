@@ -10,12 +10,11 @@ import SwiftUI
 struct MessageRow: View {
     let message: String
     let isMyMessage: Bool
-    let user: String
     let date: Date
     
     var body: some View {
         HStack(spacing: .zero) {
-            if isMyMessage {
+            if isMyMessage { // 自身のメッセージ（画面右側）
                 Spacer()
                 VStack(alignment: .trailing, spacing: .zero) {
                     Text(message)
@@ -23,7 +22,7 @@ struct MessageRow: View {
                     Spacer().frame(height: 4)
                     infoContentView()
                 }
-            } else {
+            } else { // 相手のメッセージ（画面左側）
                 VStack(alignment: .leading, spacing: .zero) {
                     Text(message)
                         .modifier(ChatRowModifier(background: Color(.systemGray5), foreground: .black))
@@ -37,21 +36,17 @@ struct MessageRow: View {
         .padding(.vertical, 4)
     }
     
+    /// 送信日時
     private func infoContentView() -> some View {
         VStack(spacing: .zero) {
-            if isMyMessage {
+            if isMyMessage { // 自身が送信した日時
                 Text(date.text)
                     .font(.footnote)
                     .foregroundColor(.gray)
-            } else {
-                HStack(spacing: .zero) {
-                    Text(user)
-                        .font(.footnote)
-                    Spacer().frame(width: 8)
-                    Text(date.text)
-                        .font(.footnote)
-                        .foregroundColor(.gray)
-                }
+            } else { // 相手が送信した日時
+                Text(date.text)
+                    .font(.footnote)
+                    .foregroundColor(.gray)
             }
         }
     }
@@ -77,13 +72,11 @@ struct MyPreviewProvider_Previews: PreviewProvider {
             MessageRow(
                 message: "Hello",
                 isMyMessage: false,
-                user: "Foo",
                 date: Date()
             )
             MessageRow(
                 message: "Hello",
                 isMyMessage: true,
-                user: "Bar",
                 date: Date()
             )
         }

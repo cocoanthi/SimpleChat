@@ -10,11 +10,15 @@ import FirebaseFirestoreSwift
 
 struct User: Codable, Identifiable, Equatable {
     @DocumentID var id: String?
+    /// ユーザーID
     var uid: String
+    /// 名前
     var name: String
+    /// Eメール
     var email: String
+    /// 作成日時
     var createAt: Date
-    /// UUID.uuidStringを想定
+    /// ユーザーが持つグループチャット
     var groups: [Group] = []
     
     enum CodingKeys: String, CodingKey {

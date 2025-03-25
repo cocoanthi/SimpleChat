@@ -17,9 +17,11 @@ struct ResetPasswordView: View {
                 .textFieldStyle(RoundedBorderTextFieldStyle())
                 .padding()
 
-            Button("Reset Password") {
+            Button("パスワードリセット") {
                 viewModel.resetPassword(email: email)
             }
         }
+        .backGroundModifier(color: Color.ThemeColorLevel3)
+        .toolbar { CustomToolbarContent("パスワードリセット") }
     }
 }

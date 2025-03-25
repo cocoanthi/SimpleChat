@@ -18,18 +18,18 @@ class HistoryViewModel: ObservableObject {
     }
     
     let uid: String
-            
+    
     /// 重複判別用ID
     private static var groupDuplicationId = ""
     private static var messageDuplicationId = ""
     
     private let db = Firestore.firestore()
-
+    
     /// FireStore監視リスナー
     private var groupsListener: ListenerRegistration?
     private var messagesListener: ListenerRegistration?
     private var userListener: ListenerRegistration?
-
+    
     init() {
         self.uid = Auth.auth().currentUser?.uid ?? ""
         readUser()
@@ -47,7 +47,25 @@ class HistoryViewModel: ObservableObject {
         userListener?.remove()
     }
     
+    /// グループ削除
+    /// - Parameter groupIds: 削除したいgroupId配列
+    func deleteGroup(groupIds: [String]) {
+        groupIds.forEach {
+            db.collection(CollectionName.groups.rawValue).whereField("groupId", isEqualTo: $0).getDocuments() { (querySnapshot, err) in
+                if let err = err {
+                    print("Error getting documents: \(err)")
+                } else {
+                    for document in querySnapshot!.documents {
+                        document.reference.delete()
+                    }
+                }
+            }
+        }
+    }
+    
+    /// ユーザー情報取得
     private func readUser() {
+        // FireStoreからユーザー情報を監視
         userListener = db.collection(CollectionName.users.rawValue)
         // FIXME: listenerで監視する必要はない
             .addSnapshotListener { (querySnapshot, error) in
@@ -57,6 +75,7 @@ class HistoryViewModel: ObservableObject {
                 }
                 guard let querySnapshot else { return }
                 querySnapshot.documentChanges.forEach { doc in
+                    // ユーザー情報に変化（更新）があった場合
                     if doc.type == .added {
                         do {
                             let user = try doc.document.data(as: User.self)
@@ -75,7 +94,9 @@ class HistoryViewModel: ObservableObject {
             }
     }
     
+    /// ユーザーに紐づくグループ情報を取得
     private func readAllGroups() {
+        // FireStoreからグループ情報を監視
         groupsListener = db.collection(CollectionName.groups.rawValue)
             .order(by: Group.CodingKeys.createAt.rawValue)
             .addSnapshotListener { (querySnapshot, error) in
@@ -85,19 +106,29 @@ class HistoryViewModel: ObservableObject {
                 }
                 guard let querySnapshot else { return }
                 querySnapshot.documentChanges.forEach { doc in
+                    // グループ情報情報に変化（更新）があった場合
                     if doc.type == .added {
                         do {
                             let group = try doc.document.data(as: Group.self)
                             // 同じ通知が複数回飛んでくる場合があるため重複処理
                             guard Self.groupDuplicationId != group.id else { return }
                             Self.groupDuplicationId = group.id ?? ""
-
+                            
+                            // 更新があった場合都度走査しているため、重複している情報は登録しない
                             let isExist = CommonViewModel.shared.user?.groups.contains { $0.id == group.id } ?? false
-                            // 二重登録はしない
                             if group.uids.contains(self.uid) && !isExist {
                                 DispatchQueue.main.async {
                                     CommonViewModel.shared.user?.groups.append(group)
                                 }
+                            }
+                        } catch {
+                            Logger.error(error: error)
+                        }
+                    } else if doc.type == .removed {
+                        do {
+                            let group = try doc.document.data(as: Group.self)
+                            DispatchQueue.main.async {
+                                CommonViewModel.shared.user?.groups.removeAll(where: { $0.id == group.id })
                             }
                         } catch {
                             Logger.error(error: error)
@@ -136,21 +167,5 @@ class HistoryViewModel: ObservableObject {
                     }
                 }
             }
-    }
-    
-    func addGroup(toUid: String, groupId: String = UUID().uuidString, groupName: String, createAt: Date = Date()) {
-        do {
-            let group = Group(groupId: groupId, name: groupName, uids: [uid, toUid], createAt: createAt)
-            try db.collection(CollectionName.groups.rawValue).addDocument(from: group) { error in
-                if let error = error {
-                    Logger.error(error: error)
-                    return
-                }
-                // TODO: 成功アラート表示（トースト）
-                Logger.info("success")
-            }
-        } catch {
-            Logger.error(error: error)
-        }
     }
 }
