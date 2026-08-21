@@ -1,6 +1,9 @@
 # SimpleChat
 
 SimpleChatはSwiftUIとFirebaseを用いたシンプルなチャットアプリです。
+主にFirebase学習のために作成しました。
+
+https://github.com/user-attachments/assets/6eb2daed-f76e-4661-b36a-bad3437d65f1
 
 ## 主な機能
 
